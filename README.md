@@ -2,7 +2,7 @@
 
 **Для сотрудников:** [установка, настройка Git и Git Extensions, размещение готовых файлов](INSTALL-RU.md).
 
-Структурное трехстороннее слияние XML на Go для Windows. Согласованные требования и этапы находятся в [SPECIFICATION.md](SPECIFICATION.md).
+Структурное трехстороннее слияние XML на Go для Windows и Linux. В Windows редактор работает в окне WebView2, в Linux — в локальном браузере. [Установка для Windows](INSTALL-RU.md), [установка для Linux](INSTALL-LINUX.md), [выпуск версий](RELEASING.md). Согласованные требования и этапы находятся в [SPECIFICATION.md](SPECIFICATION.md).
 
 ## Текущее состояние
 

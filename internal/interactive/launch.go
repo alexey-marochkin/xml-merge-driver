@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 )
 
 // Launch forwards each path as an argument, never as a shell command string.
@@ -19,7 +20,11 @@ func Launch(ctx context.Context, o Options, binary string, stdout, stderr io.Wri
 			fmt.Fprintln(stderr, err)
 			return Failure
 		}
-		binary = filepath.Join(filepath.Dir(self), "xmlmerge-ui.exe")
+		name := "xmlmerge-ui"
+		if runtime.GOOS == "windows" {
+			name += ".exe"
+		}
+		binary = filepath.Join(filepath.Dir(self), name)
 	}
 	cmd := exec.CommandContext(ctx, binary, o.Args()...)
 	cmd.Stdout, cmd.Stderr = stdout, stderr

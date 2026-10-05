@@ -1,4 +1,4 @@
-//go:build !windows
+//go:build !windows && !linux
 
 package main
 
@@ -8,6 +8,6 @@ import (
 )
 
 func runWindow(*ui.Server) error {
-	return fmt.Errorf("интерактивное приложение поддерживает Windows")
+	return fmt.Errorf("интерактивное приложение поддерживает Windows и Linux")
 }
 func showError(err error) { diagnostic(err) }

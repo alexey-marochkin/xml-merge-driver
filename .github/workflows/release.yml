@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check release tag
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a tag like v1.2.3: $RELEASE_TAG" >&2
+            exit 1
+          fi
+
+  windows:
+    needs: validate
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Test
+        run: |
+          go test ./...
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          go vet ./...
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Package
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./scripts/package-windows.ps1 -Version ($env:RELEASE_TAG.Substring(1))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-release
+          path: dist/XmlMerge-Windows-x64-*.zip
+          if-no-files-found: error
+
+  linux:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Test
+        run: |
+          go test ./...
+          go vet ./...
+      - name: Package
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: bash scripts/package-linux.sh "${RELEASE_TAG#v}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-release
+          path: dist/XmlMerge-Linux-x64-*.tar.gz
+          if-no-files-found: error
+
+  publish:
+    needs: [windows, linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: '*-release'
+          path: dist
+          merge-multiple: true
+      - name: Publish GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          version="${RELEASE_TAG#v}"
+          windows="dist/XmlMerge-Windows-x64-$version.zip"
+          linux="dist/XmlMerge-Linux-x64-$version.tar.gz"
+          test -s "$windows"
+          test -s "$linux"
+          (cd dist && sha256sum "$(basename "$windows")" "$(basename "$linux")" > SHA256SUMS.txt)
+          gh release create "$RELEASE_TAG" "$windows" "$linux" dist/SHA256SUMS.txt \
+            --verify-tag --generate-notes --title "XML Merge $RELEASE_TAG"
