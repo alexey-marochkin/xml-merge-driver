@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Check tag and test
+        id: version
+        env:
+          RELEASE_TAG: ${{ gitverse.ref_name }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a tag like v1.2.3: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          echo "number=${RELEASE_TAG#v}" >> "$GITVERSE_OUTPUT"
+          go test ./...
+          go vet ./...
+      - name: Package Windows and Linux
+        env:
+          VERSION: ${{ steps.version.outputs.number }}
+        run: |
+          set -euo pipefail
+          bash scripts/package-windows-cross.sh "$VERSION"
+          bash scripts/package-linux.sh "$VERSION"
+          (cd dist && sha256sum "XmlMerge-Windows-x64-$VERSION.zip" "XmlMerge-Linux-x64-$VERSION.tar.gz" > SHA256SUMS.txt)
+      - name: Publish GitVerse release
+        uses: actions/create-release@v1
+        with:
+          api_key: ${{ secrets.RELEASE_API_KEY }}
+          title: XML Merge ${{ gitverse.ref_name }}
+          body: |
+            Windows: собственное окно WebView2 и интеграция с Git Extensions.
+            Linux: CLI-драйвер и локальный веб-интерфейс в браузере.
+            Инструкции находятся в INSTALL-RU.md и INSTALL-LINUX.md в репозитории.
+          files: |
+            dist/XmlMerge-Windows-x64-${{ steps.version.outputs.number }}.zip
+            dist/XmlMerge-Linux-x64-${{ steps.version.outputs.number }}.tar.gz
+            dist/SHA256SUMS.txt
+          draft: false
+          pre_release: false
