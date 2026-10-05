@@ -7,7 +7,7 @@ XML Merge автоматически объединяет XML по структ�
 Скачайте `XmlMerge-Windows-x64-<версия>.zip` из [раздела Releases](https://github.com/alexey-marochkin/xml-merge-driver/releases), распакуйте и запустите `Install-XmlMerge.ps1` в PowerShell:
 
 ```powershell
-cd <папка_с_распакованным_архивом>
+cd "C:\путь\к\распакованному\архиву"
 .\Install-XmlMerge.ps1
 ```
 

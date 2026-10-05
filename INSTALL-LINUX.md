@@ -3,8 +3,9 @@
 Скачайте `XmlMerge-Linux-x64-<версия>.tar.gz` из [Releases](https://github.com/alexey-marochkin/xml-merge-driver/releases), распакуйте и запустите установщик:
 
 ```sh
-tar -xzf XmlMerge-Linux-x64-<версия>.tar.gz -C /пустая/папка
-cd /пустая/папка
+mkdir xmlmerge-linux
+tar -xzf XmlMerge-Linux-x64-*.tar.gz -C xmlmerge-linux
+cd xmlmerge-linux
 sh ./Install-XmlMerge.sh
 ```
 

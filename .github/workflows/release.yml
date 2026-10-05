@@ -30,7 +30,7 @@ jobs:
     needs: validate
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
@@ -56,7 +56,7 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
@@ -102,4 +102,5 @@ jobs:
           test -s "$linux"
           (cd dist && sha256sum "$(basename "$windows")" "$(basename "$linux")" > SHA256SUMS.txt)
           gh release create "$RELEASE_TAG" "$windows" "$linux" dist/SHA256SUMS.txt \
-            --verify-tag --generate-notes --title "XML Merge $RELEASE_TAG"
+            --verify-tag --generate-notes --title "XML Merge $RELEASE_TAG" \
+            --notes 'Windows: собственное окно WebView2 и интеграция с Git Extensions. Linux: CLI-драйвер и локальный веб-интерфейс в браузере. Инструкции находятся в INSTALL-RU.md и INSTALL-LINUX.md в репозитории.'
