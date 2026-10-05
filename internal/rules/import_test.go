@@ -13,19 +13,34 @@ import (
 
 func imported(t *testing.T) *rules.Database {
 	t.Helper()
-	db, err := rules.Load(filepath.Join("..", "..", "examples", "imported-pmfmt-rules.xml"))
-	if err != nil {
+	// Keep this historical import behavior independent of the user's mutable
+	// rules.xml and of the private source formats used to create it.
+	const sample = `<xmlmerge version="2">
+  <profile root="ConfigDumpInfo" namespace="*">
+    <rule selector="*" mode="text" order="insignificant" origin="imported" trim-space="true" />
+    <rule selector="Metadata" mode="attribute" order="default" origin="imported" no-inherit="true">
+      <field name="name" lexical="true" /><field name="id" lexical="true" />
+    </rule>
+  </profile>
+  <profile root="DataCompositionSchema" namespace="*">
+    <rule selector="*" mode="text" order="significant" origin="imported" trim-space="true" />
+    <rule selector="dataSet" mode="element" order="default" origin="imported" no-inherit="true">
+      <field name="name" lexical="true" trim-space="true" />
+    </rule>
+    <rule selector="dataSet/name" mode="text" order="default" origin="imported" trim-space="true" no-inherit="true" />
+    <rule selector="field" mode="element" order="default" origin="imported" no-inherit="true">
+      <field name="field" lexical="true" trim-space="true" />
+    </rule>
+    <rule selector="field/field" mode="text" order="default" origin="imported" trim-space="true" no-inherit="true" />
+  </profile>
+</xmlmerge>`
+	path := filepath.Join(t.TempDir(), "imported-rules.xml")
+	if err := os.WriteFile(path, []byte(sample), 0600); err != nil {
 		t.Fatal(err)
 	}
-	if db.Version != 2 || len(db.Profiles) != 17 {
-		t.Fatal("incomplete imported database")
-	}
-	count := 0
-	for _, p := range db.Profiles {
-		count += len(p.Rules)
-	}
-	if count != 56 {
-		t.Fatal(count)
+	db, err := rules.Load(path)
+	if err != nil {
+		t.Fatal(err)
 	}
 	return db
 }
