@@ -1,4 +1,4 @@
-param([switch]$UseGlobal)
+﻿param([switch]$UseGlobal)
 $ErrorActionPreference = 'Stop'
 $project = Split-Path $PSScriptRoot -Parent
 $binary = (Join-Path $project 'bin/xmlmerge.exe').Replace('\','/')

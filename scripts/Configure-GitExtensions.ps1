@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory=$true)][string]$RepositoryPath,
     [Parameter(Mandatory=$true)][string]$AraxisExe,
     [string]$InstallDir = (Join-Path $env:LOCALAPPDATA 'Programs\XmlMerge')
@@ -17,6 +17,7 @@ if ($LASTEXITCODE -ne 0) { throw "Не найден репозиторий Git: 
 $dir = $InstallDir.Replace('\', '/')
 $araxis = $AraxisExe.Replace('\', '/')
 $cmd = '"' + $dir + '/xmlmerge-select.exe" --rules "' + $dir + '/rules.xml" --araxis "' + $araxis + '" --base "$BASE" --local "$LOCAL" --remote "$REMOTE" --output "$MERGED"'
+if ($PSVersionTable.PSVersion.Major -lt 7) { $cmd = $cmd.Replace('"', '\"') }
 & git.exe -C $RepositoryPath config --local mergetool.xmlmerge-select.cmd $cmd
 if ($LASTEXITCODE -ne 0) { throw 'Не удалось записать команду mergetool' }
 & git.exe -C $RepositoryPath config --local mergetool.xmlmerge-select.trustExitCode false

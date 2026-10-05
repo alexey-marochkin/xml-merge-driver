@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$Destination = (Join-Path $env:LOCALAPPDATA 'Programs\XmlMerge'),
     [string]$GitConfigFile = ''
 )
@@ -28,6 +28,8 @@ if ($GitConfigFile -ne '') {
     $gitArgs = @('--file', $GitConfigFile)
 }
 function GitConfig([string]$key, [string]$value) {
+    # Windows PowerShell 5.1 removes embedded quotes from native arguments.
+    if ($PSVersionTable.PSVersion.Major -lt 7) { $value = $value.Replace('"', '\"') }
     $result = & git.exe config @gitArgs $key $value
     if ($LASTEXITCODE -ne 0) { throw "Ошибка настройки Git: $key" }
     return $result

@@ -4,12 +4,15 @@ XML Merge автоматически объединяет XML по структ�
 
 ## 1. Установка готового комплекта
 
-Скачайте `XmlMerge-Windows-x64-<версия>.zip` из [раздела Releases](https://github.com/alexey-marochkin/xml-merge-driver/releases), распакуйте и запустите `Install-XmlMerge.ps1` в PowerShell:
+Скачайте `XmlMerge-Windows-x64-<версия>.zip` из [GitHub Releases](https://github.com/alexey-marochkin/xml-merge-driver/releases) или [GitVerse Releases](https://gitverse.ru/alexey.marochkin/xml-merge-driver/releases), распакуйте и выполните в PowerShell:
 
 ```powershell
 cd "C:\путь\к\распакованному\архиву"
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 .\Install-XmlMerge.ps1
 ```
+
+Изменение политики выполнения действует только в этом окне PowerShell и сбрасывается при его закрытии.
 
 Скрипт положит следующие файлы в `%LOCALAPPDATA%\Programs\XmlMerge` текущего пользователя Windows:
 

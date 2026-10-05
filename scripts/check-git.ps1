@@ -1,4 +1,4 @@
-param([string]$Binary = (Join-Path $PSScriptRoot '..\bin\xmlmerge.exe'))
+﻿param([string]$Binary = (Join-Path $PSScriptRoot '..\bin\xmlmerge.exe'))
 $ErrorActionPreference = 'Stop'
 $Binary = (Resolve-Path -LiteralPath $Binary).Path.Replace('\', '/')
 $repo = Join-Path ([System.IO.Path]::GetTempPath()) ('xmlmerge проверка ' + [guid]::NewGuid().ToString('N'))

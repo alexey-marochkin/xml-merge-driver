@@ -1,4 +1,4 @@
-# Creates an isolated example requiring a three-attribute manual key.
+﻿# Creates an isolated example requiring a three-attribute manual key.
 $ErrorActionPreference = 'Stop'
 $project = Split-Path $PSScriptRoot -Parent
 $binary = Join-Path $project 'bin\xmlmerge.exe'

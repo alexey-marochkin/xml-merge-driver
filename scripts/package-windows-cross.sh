@@ -8,6 +8,12 @@ if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 project="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+for script in Install-XmlMerge.ps1 Configure-GitExtensions.ps1; do
+  if [[ "$(od -An -tx1 -N3 "$project/scripts/$script" | tr -d ' \n')" != efbbbf ]]; then
+    echo "PowerShell 5.1 requires a UTF-8 BOM: $script" >&2
+    exit 1
+  fi
+done
 stage="$(mktemp -d)"
 trap 'rm -rf -- "$stage"' EXIT
 mkdir -p "$project/dist"

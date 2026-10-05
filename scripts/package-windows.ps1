@@ -1,7 +1,9 @@
-param([string]$Version = '0.1.0')
+﻿param([string]$Version = '0.1.0')
 
 $ErrorActionPreference = 'Stop'
 if ($Version -notmatch '^[0-9]+\.[0-9]+\.[0-9]+$') { throw 'Версия должна иметь вид 0.1.0' }
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Check-PowerShell51.ps1')
+if ($LASTEXITCODE -ne 0) { throw 'Проверка PowerShell 5.1 не пройдена' }
 $project = Split-Path $PSScriptRoot -Parent
 & (Join-Path $PSScriptRoot 'build.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'Сборка не завершилась' }
