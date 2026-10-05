@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<merge-policy version="1">
+  <keep-local-files>
+    <file>ConfigDumpInfo.xml</file>
+  </keep-local-files>
+  <supplier>
+    <branch>origin1c</branch>
+  </supplier>
+  <eligible-files>
+    <file>Rights.xml</file>
+    <file>Form.xml</file>
+    <file>Template.xml</file>
+    <file>Schedule.xml</file>
+    <file>ru.html</file>
+  </eligible-files>
+  <eligible-changes>
+    <change>
+      <attribute name="version" />
+    </change>
+    <change>
+      <attribute name="version" />
+      <attribute name="uuid" />
+    </change>
+  </eligible-changes>
+</merge-policy>

@@ -1,0 +1,33 @@
+.profilePicker{padding:0 20px}.profilePicker label{font-size:11px;color:var(--muted)}.profilePicker select{width:100%;margin:8px 0 12px}.entry{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;font-size:12px}.entry input,.entry select,.profilePicker select,.keyField input{padding:10px;border:1px solid var(--border);border-radius:6px;background:white;color:#304a3f;min-width:0}.keyField{display:grid;grid-template-columns:1fr 1.3fr auto;gap:8px;margin-bottom:10px}.keyField label{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:11px}.keyField button{align-self:end}#fieldSection{margin:20px 0}#namespace{margin-bottom:10px}#rulesFile{margin-top:12px}#path{font-family:Consolas,monospace}.group strong{overflow-wrap:anywhere;white-space:normal}.group span{min-width:0}#error{overflow-wrap:anywhere}#fields{display:block}#origin:empty{display:none}
+body{height:100vh;display:flex;flex-direction:column;overflow:hidden}header,footer,.context{flex-shrink:0}main#rulesView{height:auto;min-height:0;flex:1}#error{flex-shrink:0;max-height:100px;overflow:auto}
+
+.keyField{grid-template-columns:1fr 1.2fr auto}.keyField label:has(input[type=checkbox]){flex-direction:row;align-items:center;font-size:10px}.keyField button{grid-column:3;grid-row:1 / 3}
+
+header.catalogHeader{height:56px;gap:26px;justify-content:flex-start}
+.catalogHeader .brand,.catalogHeader>.badge,.catalogHeader .headerActions{flex-shrink:0}
+.catalogHeader>.badge{margin:0}
+.catalogHeader .documentHeading{flex:1;min-width:0}
+.catalogHeader h1{margin:0;font-size:24px;line-height:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.catalogHeader #rulesFile{margin:2px 0 0;line-height:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:1000px){header.catalogHeader{gap:16px}.catalogHeader h1{font-size:21px}}
+
+header.catalogHeader{height:76px}
+.catalogHeader .fileLine{display:flex;align-items:center;gap:8px;min-width:0}
+.catalogHeader #rulesFile{flex:0 1 auto;min-width:0;margin:0}
+.fileActions{display:flex;flex-shrink:0;gap:2px}
+.iconButton{display:grid;place-items:center;width:26px;height:26px;padding:4px}
+.iconButton svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.catalogHeader #status{display:block;font-size:10px;line-height:12px;color:var(--muted)}
+.catalogHeader #status.unsaved{color:var(--warning-text)}
+.profilePicker select{margin-bottom:0}
+
+/* A single spacing rhythm keeps the catalog sidebar compact and aligned. */
+.catalogSidebar{padding-top:8px;gap:8px}
+.catalogSidebar>.asideHead{padding:0 20px;min-height:28px;flex-shrink:0}
+.catalogSidebar>.asideHead .quiet{padding:4px 7px;line-height:20px}
+.catalogSidebar>.profilePicker{padding:0 10px;display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.catalogSidebar .profilePicker label{padding:0 10px}
+.catalogSidebar .profilePicker select{margin:0}
+.catalogSidebar>.search{padding:0 10px;flex-shrink:0}
+.catalogSidebar>.groups{padding:0 10px 10px;min-height:0}
+.catalogSidebar .group{margin:0 0 4px}

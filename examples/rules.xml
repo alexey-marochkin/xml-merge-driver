@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmlmerge version="1">
+  <profile root="Root">
+    <rule path="/{}Root" mode="text" order="insignificant" origin="manual"/>
+    <rule path="/{}Root/{}Item" mode="attribute" order="significant" origin="manual">
+      <field name="id"/>
+    </rule>
+  </profile>
+</xmlmerge>
